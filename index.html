@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイコパス自己診断 | ジブンwoカシカ</title>
+<meta name="description" content="PCL-R・LSRP・TriPMをベースにした本格サイコパス自己診断。男性版・女性版対応。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c26;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--text:#e8e8f0;--muted:#7a7a9a;--accent:#c44569;--accent2:#8b5cf6}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif}
+.app{max-width:680px;margin:0 auto;padding:2rem 1.2rem 5rem}
+.top{text-align:center;padding:3rem 0 2.5rem}
+.top-eyebrow{font-size:.7rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem}
+.top h1{font-family:'Noto Serif JP',serif;font-size:1.8rem;font-weight:600;line-height:1.5;margin-bottom:.5rem}
+.top .sub{font-size:.75rem;color:var(--muted);letter-spacing:.1em;margin-bottom:2.5rem}
+.intro-body{font-size:.88rem;line-height:2;color:#b8b8d0;text-align:left;margin-bottom:2rem}
+.intro-body p{margin-bottom:1.2rem}
+.intro-body strong{color:var(--text);font-weight:500}
+.hook-line{border-left:2px solid var(--accent);padding-left:1.2rem;margin:1.5rem 0;font-size:.9rem;line-height:1.9;color:#c8c8e0}
+.scale-box{background:var(--surface);border:.5px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:2rem}
+.scale-box h4{font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.8rem}
+.scale-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.scale-tag{font-size:.72rem;padding:3px 10px;border-radius:20px;background:rgba(139,92,246,.12);border:.5px solid rgba(139,92,246,.3);color:#a78bfa}
+.mode-section h2{font-size:.75rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem}
+.gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.gender-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:1.5rem 1.2rem;cursor:pointer;transition:all .2s;text-align:left}
+.gender-card:hover{border-color:var(--accent);background:var(--surface2);transform:translateY(-2px)}
+.gender-card .gc-label{font-size:.68rem;letter-spacing:.1em;padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:.8rem;background:rgba(196,69,105,.15);color:#e87fa0;border:.5px solid rgba(196,69,105,.3)}
+.gender-card h3{font-size:1rem;font-weight:500;margin-bottom:.5rem}
+.gender-card p{font-size:.78rem;color:var(--muted);line-height:1.7}
+.gender-card .start-arrow{display:block;margin-top:1rem;font-size:.78rem;color:var(--accent)}
+.intro-page{display:none}
+.back-btn{font-size:.78rem;color:var(--muted);cursor:pointer;margin-bottom:2rem;display:flex;align-items:center;gap:.4rem;background:none;border:none;font-family:'Noto Sans JP',sans-serif}
+.back-btn:hover{color:var(--text)}
+.page-title{font-family:'Noto Serif JP',serif;font-size:1.5rem;font-weight:600;margin-bottom:.4rem;line-height:1.5}
+.page-tag{font-size:.7rem;color:var(--muted);letter-spacing:.1em;margin-bottom:2rem}
+.page-body{font-size:.88rem;line-height:2;color:#c0c0d8;margin-bottom:2rem}
+.page-body p{margin-bottom:1.2rem}
+.page-body strong{color:var(--text);font-weight:500}
+.start-btn{width:100%;padding:1rem;font-size:1rem;font-family:'Noto Serif JP',serif;font-weight:600;letter-spacing:.1em;border-radius:10px;border:1px solid var(--accent);background:rgba(196,69,105,.1);color:var(--accent);cursor:pointer;transition:all .2s}
+.start-btn:hover{background:rgba(196,69,105,.2)}
+.quiz-page{display:none}
+.progress-wrap{margin-bottom:2rem}
+.progress-info{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:.5rem}
+.progress-bar{height:2px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s ease}
+.q-category{font-size:.68rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:.8rem}
+.q-text{font-size:.95rem;line-height:1.9;color:var(--text);margin-bottom:1.2rem;font-family:'Noto Serif JP',serif}
+.options{display:flex;flex-direction:column;gap:.5rem}
+.opt-btn{padding:.75rem 1rem;font-size:.88rem;font-family:'Noto Sans JP',sans-serif;border:.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;min-height:52px;-webkit-tap-highlight-color:transparent}
+.opt-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(196,69,105,.07)}
+.opt-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(196,69,105,.1)}
+.nav-row{display:flex;gap:1rem;margin-top:2rem}
+.prev-btn{flex:1;padding:.8rem;font-size:.85rem;font-family:'Noto Sans JP',sans-serif;border:.5px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.opt-btn.animating{transform:scale(0.98);transition:transform .1s}
+.loading-screen{display:none;text-align:center;padding:5rem 0}
+.loading-screen p{color:var(--muted);font-size:.85rem;margin-top:1rem}
+.spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result-page{display:none}
+.result-header{text-align:center;padding:2rem 0;border-bottom:.5px solid var(--border);margin-bottom:2rem}
+.result-level{font-size:.7rem;letter-spacing:.15em;color:var(--muted);margin-bottom:.8rem;text-transform:uppercase}
+.result-type{font-family:'Noto Serif JP',serif;font-size:1.9rem;font-weight:600;margin-bottom:.5rem}
+.result-score-row{display:flex;align-items:baseline;justify-content:center;gap:.4rem;margin-top:1rem}
+.score-num{font-size:2.5rem;font-weight:300}
+.score-denom{font-size:1rem;color:var(--muted)}
+.gauge-wrap{margin:1.5rem auto;max-width:320px}
+.gauge{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem}
+.dim-card{background:var(--surface);border:.5px solid var(--border);border-radius:8px;padding:.8rem}
+.dim-name{font-size:.72rem;color:var(--muted);margin-bottom:.4rem}
+.dim-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:.4rem}
+.dim-fill{height:100%;border-radius:2px}
+.dim-val{font-size:.85rem;font-weight:500}
+.result-section{margin-bottom:2rem}
+.section-label{font-size:.7rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:.5px solid var(--border)}
+.section-text{font-size:.88rem;line-height:2;color:#c0c0d8}
+.result-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.result-list-item{padding:.7rem 0 .7rem 1.2rem;border-bottom:.5px solid var(--border);font-size:.85rem;line-height:1.8;color:#c0c0d8;position:relative}
+.result-list-item::before{content:'';position:absolute;left:0;top:.9rem;width:5px;height:5px;border-radius:50%}
+.result-list-item::before{background:var(--muted)}
+.result-list-positive .result-list-item::before,.result-list-item.result-list-positive::before{background:#06b6d4}
+.result-list-warning .result-list-item::before,.result-list-item.result-list-warning::before{background:#f59e0b}
+.result-list-danger .result-list-item::before,.result-list-item.result-list-danger::before{background:#c44569}
+.retry-btn{width:100%;margin-top:2rem;padding:1rem;font-size:.9rem;font-family:'Noto Sans JP',sans-serif;border:.5px solid var(--border2);border-radius:10px;background:transparent;color:var(--text);cursor:pointer;transition:all .2s}
+.retry-btn:hover{background:var(--surface)}
+@media(max-width:480px){.top h1{font-size:1.5rem}.gender-grid{grid-template-columns:1fr}.dim-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="topPage">
+    <div class="top">
+      <div class="top-eyebrow">Psychopathy Self-Assessment</div>
+      <h1>あなたの中の<br>「冷たい理性」、<br>その正体を見てみましょう。</h1>
+      <div class="sub">サイコパス自己診断 / Scientific Edition</div>
+    </div>
+    <div class="intro-body">
+      <p>「感情に振り回されない」「冷静すぎる」「共感できていない気がする」——そう感じたことが、一度でもあるなら。</p>
+      <div class="hook-line">サイコパシーは映画の殺人鬼の話ではありません。<strong>一般人口の約1〜4%</strong>が潜在的傾向を持つとされ、あなたの職場、家族、そして<strong>鏡の中に存在している</strong>かもしれません。</div>
+      <p>共感のコントロール、リスク耐性、魅力的な対人操作——これらは日常のあらゆる場面に潜んでいます。そして<strong>当事者は、ほぼ気づいていない</strong>のが現実です。</p>
+    </div>
+    <div class="scale-box">
+      <h4>使用している心理学的尺度</h4>
+      <div class="scale-tags">
+        <span class="scale-tag">PCL-R（ヘア心理病質チェックリスト）</span>
+        <span class="scale-tag">LSRP（レベンソン自己報告尺度）</span>
+        <span class="scale-tag">TriPM（三因子サイコパシー尺度）</span>
+        <span class="scale-tag">Dark Triad</span>
+        <span class="scale-tag">BIS/BAS（行動抑制・活性尺度）</span>
+        <span class="scale-tag">HEXACO</span>
+      </div>
+    </div>
+    <div class="mode-section">
+      <h2>性別を選んで診断をはじめる</h2>
+      <div class="gender-grid">
+        <div class="gender-card" onclick="startDiag('male')">
+          <span class="gc-label">男性版</span>
+          <h3>男性版<br>自己診断</h3>
+          <p>男性特有の行動・感情パターンに特化した30問</p>
+          <span class="start-arrow">診断をはじめる →</span>
+        </div>
+        <div class="gender-card" onclick="startDiag('female')">
+          <span class="gc-label">女性版</span>
+          <h3>女性版<br>自己診断</h3>
+          <p>女性に現れやすいサイコパシーの特徴に特化した30問</p>
+          <span class="start-arrow">診断をはじめる →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-page" id="introPage">
+    <button class="back-btn" onclick="showTop()">← 最初に戻る</button>
+    <div id="introContent"></div>
+    <div class="scale-box">
+      <h4>使用している心理学的尺度</h4>
+      <div class="scale-tags" id="introScaleTags"></div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">診断をはじめる →</button>
+  </div>
+
+  <div class="quiz-page" id="quizPage">
+    <button class="back-btn" onclick="showIntro()">← 説明に戻る</button>
+    <div class="progress-wrap">
+      <div class="progress-info"><span id="qLabel">質問 1 / 30</span><span id="qPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div id="questionsContainer"></div>
+  </div>
+
+  <div class="loading-screen" id="loadingScreen">
+    <div class="spinner"></div>
+    <p>診断結果を分析中です...</p>
+  </div>
+
+  <div class="result-page" id="resultPage"></div>
+</div>
+<script>
+const INTROS={
+  male:{title:"【男性版】あなたの中の「冷たい理性」、その正体を見てみましょう。",tag:"自己診断 / 男性版 / 全30問 / 所要時間：約5分",
+  body:`<p>仕事でもプライベートでも「感情に振り回されない」と言われることはありませんか。それを<strong>強さと呼ぶか、欠如と呼ぶか</strong>は、程度によります。</p>
+<p>この診断は、あなたの日常行動・感情反応・対人パターンを30問で分析し、サイコパシーの3因子（大胆性・平均化・抑制欠如）における傾向を数値化します。<strong>知ることが、すべての始まりです。</strong></p>`,
+  scales:['PCL-R（ヘア）','LSRP','TriPM','Dark Triad','BIS/BAS']},
+  female:{title:"【女性版】「共感できない自分」に、心当たりはありませんか。",tag:"自己診断 / 女性版 / 全30問 / 所要時間：約5分",
+  body:`<p>「薄情」「冷たい」と言われたことがある方、あるいは<strong>表面上は温かく振る舞いながら、内側では何も感じていない</strong>と気づいている方へ。</p>
+<p>女性のサイコパシーは、男性と異なる形で現れることが多いです。自分を知ることは、人を傷つけないための最初の一歩でもあります。30問で、あなたの内側を一緒に可視化してみましょう。</p>`,
+  scales:['PCL-R（ヘア）','LSRP','TriPM','Dark Triad','HEXACO']}
+};
+const QS={
+  male:[
+    {cat:'大胆性',q:'初対面の人物に対して、すぐに信頼を勝ち取ることができると感じる'},
+    {cat:'大胆性',q:'リスクや危険を前にしても、極端に不安を感じることは少ない'},
+    {cat:'大胆性',q:'権威のある人物や規則に対して、必要であれば平然と無視・違反できる'},
+    {cat:'大胆性',q:'プレッシャーの高い場面でも、感情が表に出ることはほとんどない'},
+    {cat:'大胆性',q:'自分が場の中心になることに違和感や居心地の悪さを感じない'},
+    {cat:'平均化',q:'他者の失敗や弱さを見たとき、内心では軽蔑することがある'},
+    {cat:'平均化',q:'自分の目標を達成するためなら、多少相手を傷つけることも仕方ないと思える'},
+    {cat:'平均化',q:'感情的に泣いたり怒ったりしている人を見ると、冷めた気持ちになる'},
+    {cat:'平均化',q:'人を動かすために、意図的に情報を操作・省略することがある'},
+    {cat:'平均化',q:'関係が不要になった人物との縁を切ることに、ためらいはほとんどない'},
+    {cat:'抑制欠如',q:'衝動的な決断をして後悔したことが複数回ある'},
+    {cat:'抑制欠如',q:'退屈を強く嫌う。刺激のない状況に長く耐えられない'},
+    {cat:'抑制欠如',q:'約束や締め切りをルーズに扱うことが多い'},
+    {cat:'抑制欠如',q:'将来の結果より、今この瞬間の満足を優先しがちだ'},
+    {cat:'抑制欠如',q:'法律やルールは、状況によって守らなくていいと思うことがある'},
+    {cat:'共感・感情',q:'他者が泣いているとき、心から悲しい気持ちになることは少ない'},
+    {cat:'共感・感情',q:'自分が誰かを傷つけたとき、強い罪悪感を長く引きずることはない'},
+    {cat:'共感・感情',q:'感動的な映画や音楽に、ほとんど感情的な反応が起きない'},
+    {cat:'共感・感情',q:'他者の感情より、論理や結果を重視することが多い'},
+    {cat:'共感・感情',q:'自分の感情を「演じる」ことに慣れていると感じる'},
+    {cat:'対人操作',q:'相手の弱点や欲望を把握し、それを活用した交渉をしたことがある'},
+    {cat:'対人操作',q:'嘘をついても表情や態度に出ないと言われたことがある'},
+    {cat:'対人操作',q:'人を魅了・説得するために、自分のイメージを意図的に作り上げることがある'},
+    {cat:'対人操作',q:'誰かが自分に好意を持っていると知ったとき、それを利用したいと思うことがある'},
+    {cat:'対人操作',q:'「あなただけに話す」という言い方をして、相手の信頼を高めたことがある'},
+    {cat:'自己中心性',q:'自分は平均的な人間よりも優れていると、根拠なく感じることがある'},
+    {cat:'自己中心性',q:'批判や否定を受けたとき、素直に受け入れるより反論したくなる'},
+    {cat:'自己中心性',q:'自分の失敗を他者や環境のせいにしてしまうことがある'},
+    {cat:'自己中心性',q:'他者からの賞賛や注目を、静かに心地よく感じる'},
+    {cat:'自己中心性',q:'自分のルールや価値観が、他者のそれより正しいと感じることが多い'}
+  ],
+  female:[
+    {cat:'大胆性',q:'初対面でも、相手に好印象を与えることが得意だと感じる'},
+    {cat:'大胆性',q:'感情的に動揺している場面でも、外見上は落ち着いて見せることができる'},
+    {cat:'大胆性',q:'批判や拒絶を受けても、自己評価が大きく揺らぐことはない'},
+    {cat:'大胆性',q:'リスクのある選択を、他者より早く決断できることが多い'},
+    {cat:'大胆性',q:'「あなたはなぜそんなに動じないの？」と言われたことがある'},
+    {cat:'平均化',q:'表面上は親切にしながら、内心では相手を見下していることがある'},
+    {cat:'平均化',q:'感情的に訴えてくる人に対して、冷めた気持ちや苛立ちを感じる'},
+    {cat:'平均化',q:'自分に利益のない人間関係を、無感情に終わらせることができる'},
+    {cat:'平均化',q:'相手の弱さや不安を、無意識に利用していることがある（かもしれない）'},
+    {cat:'平均化',q:'「あの人は傷つく」とわかっていても、言葉や行動を変えないことがある'},
+    {cat:'抑制欠如',q:'衝動的な行動（買い物・連絡・決断など）を、後で後悔することがある'},
+    {cat:'抑制欠如',q:'日常が単調に感じると、何か「刺激」を求めて行動したくなる'},
+    {cat:'抑制欠如',q:'ルールや慣習よりも、自分の判断を優先したい気持ちが強い'},
+    {cat:'抑制欠如',q:'将来の安定より、今の快楽や感情を優先してしまうことがある'},
+    {cat:'抑制欠如',q:'計画を守ることや、長期的な目標を持続させることが苦手だ'},
+    {cat:'共感・感情',q:'他者が泣いていても、どこか他人事のように感じることがある'},
+    {cat:'共感・感情',q:'「共感している」ように振る舞えるが、実際には何も感じていないことがある'},
+    {cat:'共感・感情',q:'感動的な話や映像に対して、感情的な反応がほとんど起きない'},
+    {cat:'共感・感情',q:'罪悪感を感じても、それが行動を変えるほど強くなることは少ない'},
+    {cat:'共感・感情',q:'「冷たい」「気持ちが読めない」と言われたことがある'},
+    {cat:'対人操作',q:'相手が何を求めているかを素早く読み取り、それに合わせた言動ができる'},
+    {cat:'対人操作',q:'相手を動かすために、感情的なアプローチを意図的に使うことがある'},
+    {cat:'対人操作',q:'「被害者」のポジションをとることで、状況を有利に進めたことがある'},
+    {cat:'対人操作',q:'好かれている相手の好意を、意識的に活用したことがある'},
+    {cat:'対人操作',q:'嘘をついても、表情や声に出ないことが多い'},
+    {cat:'自己中心性',q:'自分の価値観や判断基準が、周囲の人よりも正確だと感じることが多い'},
+    {cat:'自己中心性',q:'批判を受けたとき、素直に認めるより「相手が間違っている」と感じる'},
+    {cat:'自己中心性',q:'失敗したとき、環境や他者に原因を求めてしまうことがある'},
+    {cat:'自己中心性',q:'誰かに賞賛や特別扱いをされると、それが当然だと感じる'},
+    {cat:'自己中心性',q:'自分の魅力や能力は、客観的に見ても平均以上だと思う'}
+  ]
+};
+const OPTS=['全くそう思わない','あまり思わない','どちらとも言えない','やや当てはまる','非常に当てはまる'];
+let gender='',ans=[],q=0;
+function showTop(){['topPage'].forEach(id=>show(id));['introPage','quizPage','resultPage','loadingScreen'].forEach(id=>hide(id));}
+function show(id){document.getElementById(id).style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
+function startDiag(g){gender=g;ans=new Array(30).fill(null);q=0;showIntro();}
+function showIntro(){
+  hide('topPage');hide('quizPage');hide('resultPage');hide('loadingScreen');
+  const d=INTROS[gender];
+  document.getElementById('introContent').innerHTML=`<div class="page-title">${d.title}</div><div class="page-tag">${d.tag}</div><div class="page-body">${d.body}</div>`;
+  document.getElementById('introScaleTags').innerHTML=d.scales.map(s=>`<span class="scale-tag">${s}</span>`).join('');
+  show('introPage');
+}
+function startQuiz(){hide('introPage');show('quizPage');renderQ();}
+function renderQ(){
+  const pct=Math.round((q/30)*100);
+  document.getElementById('qLabel').textContent=`質問 ${q+1} / 30`;
+  document.getElementById('qPct').textContent=pct+'%';
+  document.getElementById('progressFill').style.width=pct+'%';
+  const qi=QS[gender][q];
+  let h=`<div><div class="q-category">${qi.cat}</div><div class="q-text">${qi.q}</div><div class="options">`;
+  OPTS.forEach((o,i)=>{const s=ans[q]===i+1?' selected':'';h+=`<button class="opt-btn${s}" onclick="selectAns(${i+1})">${i+1}. ${o}</button>`;});
+  h+=`</div></div><div class="nav-row"><button class="prev-btn" onclick="prevQ()" ${q===0?'disabled':''}>← 前へ</button></div>`;
+  document.getElementById('questionsContainer').innerHTML=h;
+}
+function selectAns(v){
+  ans[q]=v;
+  renderQ();
+  if(q===29){setTimeout(()=>{hide('quizPage');show('loadingScreen');setTimeout(showResult,2000);},400);}
+  else{setTimeout(()=>{q++;renderQ();},300);}
+}
+function showResult(){
+  hide('loadingScreen');
+  const catS={},catC={};
+  QS[gender].forEach((qi,i)=>{if(!catS[qi.cat]){catS[qi.cat]=0;catC[qi.cat]=0;}catS[qi.cat]+=(ans[i]||3);catC[qi.cat]++;});
+  const catP={};Object.keys(catS).forEach(c=>{catP[c]=Math.round((catS[c]/(catC[c]*5))*100);});
+  const total=ans.reduce((s,v)=>s+(v||3),0);
+  const pct=Math.round((total/150)*100);
+  const tier=pct>=65?'high':pct>=40?'mid':'low';
+  const d=SELF_RESULTS[tier][gender];
+  const typeColor=tier==='high'?'#c44569':tier==='mid'?'#f59e0b':'#06b6d4';
+  const typeGrad=tier==='high'?'linear-gradient(90deg,#c44569,#8b1a34)':tier==='mid'?'linear-gradient(90deg,#f59e0b,#b45309)':'linear-gradient(90deg,#06b6d4,#0e7490)';
+  const topCats=Object.keys(catP).sort((a,b)=>catP[b]-catP[a]).slice(0,4);
+  const dimColors=['#c44569','#8b5cf6','#06b6d4','#f59e0b'];
+  let dimHtml='<div class="dim-grid">';
+  topCats.forEach((c,i)=>{dimHtml+=`<div class="dim-card"><div class="dim-name">${c}</div><div class="dim-bar"><div class="dim-fill" style="background:${dimColors[i]};width:${catP[c]}%"></div></div><div class="dim-val" style="color:${dimColors[i]}">${catP[c]}%</div></div>`;});
+  dimHtml+='</div>';
+  const sections15=renderResult15(d,pct,typeColor,typeGrad);
+  let html=`<div class="result-header">
+    <div class="result-level">診断結果</div>
+    <div class="result-type" style="color:${typeColor}">${d.type}</div>
+    <div class="result-score-row"><span class="score-num" style="color:${typeColor}">${pct}</span><span class="score-denom">/ 100</span></div>
+    <div class="gauge-wrap"><div class="gauge"><div class="gauge-fill" style="background:${typeGrad};width:${pct}%"></div></div></div>
+  </div>
+  <div class="result-section"><div class="section-label">傾向の内訳</div>${dimHtml}</div>
+  ${sections15}
+  <div style="background:var(--surface);border:.5px solid var(--border);border-radius:10px;padding:1.2rem;margin-top:1rem">
+    <div class="section-label" style="margin-bottom:.6rem">診断の根拠について</div>
+    <div style="font-size:.8rem;color:var(--muted);line-height:1.9">この診断はPCL-R・LSRP・TriPM・Dark Triadを参照した設問設計に基づいています。結果は統計的傾向の可視化であり、臨床診断ではありません。自己理解と対人関係の改善にお役立てください。</div>
+  </div>
+  <button class="retry-btn" onclick="showTop()">← もう一方の性別版を試してみる</button>`;
+  document.getElementById('resultPage').innerHTML=html;
+  show('resultPage');
+}
+
+// ===== 自己診断 結果データ =====
+const SELF_RESULTS = {
+  high: {
+    male: {
+      type: "冷静支配型サイコパス",
+      oneLiner: "感情を「ツール」として扱う人",
+      desc: "感情的反応が薄く、論理と結果で動く。魅力的だが、人との距離を本能的に計算している。",
+      strengths: [
+        "感情に流されない意思決定ができる（交渉・危機対応で力を発揮する）",
+        "初対面での印象形成が巧みで、短時間で信頼を構築できる",
+        "リスクを恐れず行動できるため、他者が踏み出せない局面で先手を打てる"
+      ],
+      behaviors: [
+        "会話中に相手の「欲しがっているもの」を無意識に見抜き、それを提供している",
+        "怒りや悲しみを感じても、表情・声・行動に一切出さないでいられる",
+        "利益のない関係に時間を使うことへの抵抗感が強く、交流をコスト計算している",
+        "約束や感情的なつながりよりも、現在の状況判断を優先して行動する"
+      ],
+      others_view: "「頼りになるが、何を考えているかわからない」「冷静で信頼できるが、どこか距離を感じる」と思われることが多い。最初は魅力的に映るが、親密になろうとすると壁を感じさせる。",
+      blind_spots: [
+        "自分が相手を傷つけていることに、そのときは気づかない（後から指摘されて初めて認識する）",
+        "「論理的に正しい」と「相手が納得できる」は別物だと理解していない",
+        "感情的なつながりを「非効率なもの」と処理しているが、それが長期的な関係崩壊を生んでいる"
+      ],
+      problems: [
+        "親密な関係が深まるほど、相手が「使い捨てにされた」と感じ離れていく",
+        "信頼関係が一方向的になり、気づいたときには孤立している",
+        "感情的なサポートを求める場面で、相手を失望させるパターンが繰り返される"
+      ],
+      cause: "「感情は弱さ」という信念が根底にある。論理と結果のみを価値基準にする思考パターンが、共感を「コスト」と処理させている。",
+      future_a: "このまま進むと、仕事では評価されるが、近しい人間関係は次々に壊れる。50代以降に「なぜ誰も残っていないのか」という問いが来る可能性がある。",
+      future_b: "「感情には論理と同等の情報量がある」と認識が変わると、関係の質が劇的に変わる。信頼される人物として、より大きな影響力を持てるようになる。",
+      lever: "「感情を感じる」ことではなく、「相手の感情を情報として受け取る」習慣をつける",
+      action_a: "相手が感情的になったとき、すぐ解決策を出さず「今、どう感じているか」を一文だけ確認する",
+      action_b: "今週1回、誰かに「それは大変だったね」と感情を反映した返答を意識的に試みる",
+      first_action: "今日の会話で、相手が何かを話したあとに「それはどんな気持ちだった？」と一度だけ聞いてみる",
+      after_change: "「この人は話を聞いてくれる」と感じさせる回数が増え、自然と相手からの開示が増える。長期的な信頼関係が構築されやすくなり、人間関係の質が変化していく。",
+      redefine: "あなたは冷たい人間ではなく、感情の扱い方をまだ学んでいない状態なだけです。\n\nあなたが持つ冷静な判断力、リスク耐性、状況把握の速さは、本来であれば多くの人が頼りにしたい資質です。今、それが「距離感のある人」として伝わっているのは、能力の問題ではなく、感情という情報チャンネルを使いこなせていないためです。\n\n感情を「演じる」必要はありません。ただ、「相手が今どう感じているか」を一つの情報として受け取る習慣が生まれると、あなたの人間関係は静かに、しかし確実に変わり始めます。あなたの強さはそのままに、関係の深さだけが加わっていく未来は、十分に現実的です。"
+    },
+    female: {
+      type: "演技共感型サイコパス",
+      oneLiner: "共感を「演じられる」人",
+      desc: "表面上は温かく共感的だが、内側では感情を計算している。見えにくいゆえに、影響が深くなりやすい。",
+      strengths: [
+        "相手が求めている言葉・反応を瞬時に読み取り、適切に返せる",
+        "感情的にならない判断力があり、危機的状況で冷静に動ける",
+        "印象管理が巧みで、どんな場でも「好かれる自分」を演出できる"
+      ],
+      behaviors: [
+        "親切にしながらも、内心では相手を格付けしていることがある",
+        "利益のない人間関係を、自然に・罪悪感なく終わらせられる",
+        "共感の言葉を使いながら、会話の主導権を自分に引き寄せている",
+        "感情が平坦なとき、感情を「演じる」ことで場に溶け込んでいる"
+      ],
+      others_view: "「聞き上手で優しい人」という印象を持たれやすい。ただし親密になるほど「どこか掴めない」「本当の気持ちがわからない」と感じる人が出てくる。",
+      blind_spots: [
+        "「共感している」と思っているが、それが演技であることに自分では気づいていない",
+        "人間関係を無意識にコスト管理しており、相手はその「計算」を感じ取っている",
+        "感情的につながることへの恐れが、距離を生んでいると認識していない"
+      ],
+      problems: [
+        "深い信頼関係が築けず、表面的な関係にとどまりやすい",
+        "親密になった相手が「裏切られた」と感じ、突然関係が壊れることがある",
+        "自分の感情がわからなくなり、何のために行動しているか見失う時期が来る"
+      ],
+      cause: "感情を「弱さ」「リスク」として回避する傾向がある。自己防衛として身につけた感情の平坦化が、共感の演技として定着している。",
+      future_a: "このまま進むと、表面的なつながりは増えるが、本当に頼れる関係は形成されない。感情の空白感が、年齢とともに大きくなる可能性がある。",
+      future_b: "「感情を感じることは弱さではない」という認識が生まれると、本物の親密さが育ち始める。関係の質が変わり、自己理解も深まっていく。",
+      lever: "「感情を演じる」から「感情を少しだけ感じてみる」へのシフト",
+      action_a: "誰かに感謝したとき、その感情を言葉にせず1分間だけ内側で感じたままにいる",
+      action_b: "今週、一人に「正直、こう感じた」と感情を添えて話してみる（結果がどうであれ）",
+      first_action: "今日の終わりに、「今日感じた感情」を一つだけノートや携帯に書き留める",
+      after_change: "自分の感情に名前がつけられるようになると、相手への反応も変わる。演じるのではなく感じた言葉が出るようになり、信頼の質が変化していく。",
+      redefine: "あなたは冷たい人間ではなく、感情を安全に感じる方法をまだ見つけていない状態なだけです。\n\nあなたが持つ洞察力、場の読み方、言葉の選び方は、本来であれば深い信頼を築ける資質です。それが「距離のある共感」として機能しているのは、感情を表に出すことへの恐れが、いつの間にか「演じること」を習慣にさせてしまったからです。\n\n完全に感情的になる必要はありません。ただ、自分が「今どう感じているか」を一つだけ認識する習慣が生まれると、人との関係は静かに変わり始めます。表面的なつながりではなく、本物の親密さが育つとき、あなたはきっと「これが欲しかったものだ」と感じるはずです。"
+    }
+  },
+  mid: {
+    male: {
+      type: "状況適応型サイコパス傾向",
+      oneLiner: "スイッチが入ると「別人」になる人",
+      desc: "通常は問題ないが、競争・ストレス・権力関係の場面で、サイコパシー的傾向が顕著に現れる。",
+      strengths: [
+        "プレッシャーのある場面で冷静に判断でき、組織の危機対応で力を発揮する",
+        "合理的な思考で、感情的な議論を整理する役割を担える",
+        "大胆な意思決定ができ、他者が止まる場面で前進できる"
+      ],
+      behaviors: [
+        "競争的な場面になると、急に攻撃的・支配的な言動になることがある",
+        "部下や立場の弱い相手には強く出るが、上位者には従順になる",
+        "自分の失敗を認めるより、状況や他者に原因を求めやすい",
+        "「自分は正しい」という確信が強く、反論を受け入れにくい"
+      ],
+      others_view: "「普段はいい人なのに、なぜか怖いときがある」と言われることがある。信頼はされているが、感情的な近さを感じにくいと思われている。",
+      blind_spots: [
+        "自分が「スイッチが入った状態」のとき、周囲がどれだけ萎縮しているか気づいていない",
+        "「論理的に正しい指摘」が、相手には「攻撃」として届いていることがある",
+        "責任転嫁のクセが、信頼の蓄積を静かに削っていることに気づいていない"
+      ],
+      problems: [
+        "職場や家庭で「怖い」「近づきたくない」という空気が生まれやすい",
+        "部下や後輩が本音を言えなくなり、情報が届かない状況が生まれる",
+        "長期的な人間関係において、信頼残高が少しずつ減っていく"
+      ],
+      cause: "「弱さを見せてはいけない」という信念が、防衛として支配・攻撃行動を引き起こしている。",
+      future_a: "このまま進むと、職位は上がっても周囲に本音を言える人がいなくなる。重要な情報が届かない「孤立した管理職」になるリスクがある。",
+      future_b: "「強さ」の定義が「支配」から「安心感の提供」へ変わると、周囲の反応が劇的に変わる。影響力を持ちながら、信頼される存在になれる。",
+      lever: "「自分が正しい」より先に「相手はどう感じているか」を一度確認する習慣",
+      action_a: "誰かに指摘するとき、まず「こういう状況だったよね」と事実確認から入る",
+      action_b: "今週1回、自分のミスを「自分の判断が足りなかった」と言葉にして認める",
+      first_action: "今日、誰かに対して「私の言い方がよくなかったかもしれない」と一言添えてみる",
+      after_change: "周囲の緊張が和らぎ、本音のコミュニケーションが増える。情報が届くようになり、意思決定の質も上がっていく。",
+      redefine: "あなたは問題のある人ではなく、強さの使い方をアップデートする段階にいるだけです。\n\nあなたが持つ判断力、行動力、論理的な思考は、本来であれば多くの人を引っ張れる資質です。それが「怖い」「近づきにくい」と受け取られているのは、あなたの能力の問題ではなく、その力が「支配」として伝わってしまっているためです。\n\n強さは、相手を押さえ込むためではなく、相手が安心して動けるために使うとき、最大限に機能します。一つの言葉の変化が、周囲の反応を変え、あなたの影響力をより大きく、より本物にしていきます。"
+    },
+    female: {
+      type: "状況誘発型サイコパス傾向",
+      oneLiner: "安全な場では温かく、脅威を感じると変わる人",
+      desc: "通常の対人関係は問題ないが、不安・競争・感情的ストレスの場面で操作的・支配的傾向が表れる。",
+      strengths: [
+        "感情の切り替えが早く、気持ちを引きずらずに次の行動に移れる",
+        "場の空気を読む力が高く、状況に応じた言動ができる",
+        "問題解決の場面で感情に流されず、冷静な判断ができる"
+      ],
+      behaviors: [
+        "不安やストレスを感じると、相手を試したり罪悪感を使って動かそうとする",
+        "怒りを直接表現せず、態度や沈黙で相手にプレッシャーをかける",
+        "「私がこんなに我慢しているのに」という被害者的な語り口になることがある",
+        "関係が脅かされると、感情的な操作が増える"
+      ],
+      others_view: "「普段は穏やかなのに、ときどき追い詰められたような行動をする」と感じられることがある。安定しているときは頼れる存在だが、不安定になったときの言動が強く印象に残る。",
+      blind_spots: [
+        "自分が罪悪感を使って相手を動かしていることに気づいていない",
+        "「私は傷ついた」という表現が、相手への攻撃として機能していることがある",
+        "不安を直接伝えず、操作的な行動で解消しようとするパターンがある"
+      ],
+      problems: [
+        "信頼していた相手が「疲れた」と感じて距離を置くことがある",
+        "安定しているときと不安定なときの差が大きく、関係に一貫性がなくなる",
+        "本当の不安や欲求が伝わらず、誤解されやすい"
+      ],
+      cause: "不安を直接表現することへの恐れが、間接的な操作行動を引き起こしている。感情的なニーズを「正直に伝える」手段が学ばれていない。",
+      future_a: "このまま進むと、関係が深まるほど相手は疲弊し、安定した親密な関係を保つことが難しくなる。",
+      future_b: "「不安を直接言葉にする」という一点が変わると、相手の反応が変わり、より安定した関係が育ちやすくなる。",
+      lever: "感情的なニーズを「操作」ではなく「言葉」で伝える練習",
+      action_a: "不安を感じたとき、「試す行動」の前に「今、不安を感じている」と一言だけ伝える",
+      action_b: "今週1回、「こうしてほしい」と直接お願いしてみる",
+      first_action: "今日、誰かに対して「少し不安だった」と正直に一文だけ伝えてみる",
+      after_change: "直接的なコミュニケーションが増えると、相手の反応が変わる。「察してもらう」から「伝えて理解される」関係へ移行していく。",
+      redefine: "あなたは操作的な人ではなく、安心して本音を伝える方法をまだ見つけていない状態なだけです。\n\nあなたが感じる不安や恐れは、本物の感情です。それを直接伝えることへの怖さから、間接的な方法を選んでしまうのは、自己防衛として理解できる行動です。ただ、その方法が、最も大切な人との距離を広げてしまっています。\n\n「こう感じている」と一言伝えるだけで、関係は変わり始めます。完璧に話せなくていい。一文でいい。その一歩が、あなたが本当に求めているつながりへの、最短ルートです。"
+    }
+  },
+  low: {
+    male: {
+      type: "高共感・境界線未設定型",
+      oneLiner: "感じすぎて、自分を見失いやすい人",
+      desc: "サイコパシー傾向は低く、共感力・誠実さが高い。ただし、それが搾取されやすさにつながっているリスクがある。",
+      strengths: [
+        "相手の感情を直感的に理解し、寄り添うことができる",
+        "誠実で一貫した行動が、長期的な信頼関係を生む",
+        "責任感が強く、チームや家族の中で安定した存在になれる"
+      ],
+      behaviors: [
+        "「ノー」と言えず、断ることへの罪悪感が強い",
+        "相手の感情に引っ張られて、自分の感情と混在してしまう",
+        "他者のために行動しすぎて、自分のニーズを後回しにしている",
+        "「自分さえ我慢すれば」という解決パターンを繰り返している"
+      ],
+      others_view: "「優しくて頼れる人」と思われているが、その分「どこまでも頼っていい人」と誤解されやすい。感情的な消耗が外から見えにくく、ギリギリまで頑張ってしまう。",
+      blind_spots: [
+        "「断らないこと＝優しさ」ではなく、「無理をし続けること＝自分への不誠実さ」であることに気づいていない",
+        "相手のためと思っている行動が、実は自分の罪悪感を避けるためであることがある",
+        "境界線を引かないことで、相手との関係が不健全な方向に進んでいることに気づきにくい"
+      ],
+      problems: [
+        "自分のニーズが満たされない状態が続き、ある時点で関係全体に疲弊する",
+        "我慢の限界を超えた後の感情爆発が、関係を壊すことがある",
+        "サイコパシー傾向のある人物に「利用されやすい」という構造上のリスクがある"
+      ],
+      cause: "「他者の期待に応えることが自分の価値」という信念が、境界線の設定を困難にしている。",
+      future_a: "このまま進むと、消耗が蓄積され、ある時点で燃え尽きか関係の破綻が来る。",
+      future_b: "「境界線を引くことは冷たさではない」という認識が生まれると、持続可能な関係が築けるようになる。",
+      lever: "「断ることは関係を守ること」という信念への書き換え",
+      action_a: "今週、一つの依頼に「少し考えさせてください」と即答を避けてみる",
+      action_b: "「それは難しいです」という言葉を、今週一度だけ使ってみる",
+      first_action: "今日、自分が「本当はしたくない」と感じていることを一つ書き出す",
+      after_change: "少しずつ境界線が引けるようになると、関係の質が変わる。「利用される関係」から「対等な関係」へ移行し、消耗が減っていく。",
+      redefine: "あなたは弱い人ではなく、自分を大切にする方法を後回しにしてきただけです。\n\nあなたが持つ共感力、誠実さ、責任感は、本物の強さです。その強さが「ノーと言えない」という形で表れているとき、それは美徳ではなく、自分への消耗になっています。\n\n境界線を引くことは、相手を拒絶することではありません。自分を守りながら、相手とより長く、より深くつながるための行動です。あなたが少しずつ「自分のニーズも大切にしていい」と感じられるようになると、周囲の関係は驚くほど変わり始めます。あなたが消耗せず、本当の意味で誰かの力になれる未来は、そこにあります。"
+    },
+    female: {
+      type: "高共感・過剰配慮型",
+      oneLiner: "気を遣いすぎて、自分が見えなくなる人",
+      desc: "共感力・気配り・誠実さが高く、サイコパシー傾向は低い。ただし、過剰な配慮が自己消耗と搾取のリスクを生む。",
+      strengths: [
+        "場の雰囲気を読んで、相手が求めていることを先回りできる",
+        "感情的なサポートが得意で、相手が安心して話せる関係を作れる",
+        "誠実で約束を守り、長期的な信頼を築ける"
+      ],
+      behaviors: [
+        "相手の顔色を読んで、自分の本音を後回しにすることが多い",
+        "嫌なことを「いいよ」と言ってしまい、後から後悔する",
+        "相手の感情が乱れると、自分のせいかと感じてしまう",
+        "自分よりも相手の気分・状態を優先して行動している"
+      ],
+      others_view: "「いつも気を遣ってくれる」「何でも受け入れてくれる」と思われている。頼りやすい存在として認識されているが、その分「どこまでも許してくれる」という誤解も生まれやすい。",
+      blind_spots: [
+        "相手に合わせることで「良好な関係を保とうとしている」が、実際は関係を歪めている",
+        "「察してほしい」という期待を持ちながら、伝えていないことがある",
+        "自分の感情・欲求が、長期間にわたって後回しにされていることに慣れてしまっている"
+      ],
+      problems: [
+        "本音を言えない関係が増え、孤独感が蓄積する",
+        "ある時点で「こんなに気を遣ってきたのに」という燃え尽きが来る",
+        "サイコパシー傾向の強い人物に対して、特に関係が壊れやすい"
+      ],
+      cause: "「自分の感情・ニーズを主張すると関係が壊れる」という恐れが、過剰な配慮を生んでいる。",
+      future_a: "このまま進むと、本音を言える場所がなくなり、消耗と孤独感が積み重なる。",
+      future_b: "「自分の感情も同じだけ大切」という軸ができると、対等な関係が増え、本当の意味での親密さが育つ。",
+      lever: "自分のニーズを後回しにする前に、「自分はどうしたいか」を一度確認する習慣",
+      action_a: "誰かに何かを頼まれたとき、すぐにYESと言わず「少し考えていいですか？」と一言添える",
+      action_b: "今週一度、「私はこうしたい」という自分の希望を相手に伝えてみる",
+      first_action: "今日、「本当はこうしたかった」と思っていることを一つ、自分だけのノートに書く",
+      after_change: "自分の声を一つ言葉にするたびに、関係の質が少し変わっていく。「与えるだけ」から「与え合う」関係へ、少しずつ移行していく。",
+      redefine: "あなたは自己犠牲的な人ではなく、自分を大切にする練習がこれからの人です。\n\nあなたの気配り、共感力、誠実さは、本物の価値です。それが「自分を消して相手に合わせる」という形で使われているとき、その力はあなた自身を消耗させてしまっています。\n\nあなたの感情も、相手の感情と同じだけ大切です。その事実を一つずつ積み重ねていくことで、あなたは消耗することなく、本当に誰かの力になれる人になっていきます。自分を大切にすることは、関係を守ることと矛盾しません。むしろ、それが本物のつながりの始まりです。"
+    }
+  }
+};
+
+// ===== 他者診断 結果データ =====
+const OTHER_RESULTS = {
+  high: {
+    male: {
+      type: "支配的操作型",
+      oneLiner: "利用価値で人を選ぶ人",
+      desc: "対象者の行動パターンは、サイコパシーの主要指標と複数一致しています。魅力的な第一印象の裏に、計算された対人操作が存在する可能性があります。",
+      strengths: [
+        "危機的状況での冷静な判断（ただしそれが「あなたのため」とは限らない）",
+        "交渉・説得において高い効果を発揮する言語能力",
+        "場の空気を読み、相手が聞きたいことを伝える能力"
+      ],
+      behaviors: [
+        "初対面で非常に魅力的に振る舞い、特別な存在として扱う",
+        "会話の主導権を常に持ち、相手の話を自分の文脈に変換する",
+        "謝罪はするが、同じ行動が繰り返される",
+        "利用価値がなくなったと感じると、急に冷淡・無関心になる"
+      ],
+      others_view: "第三者から見ると「魅力的でカリスマがある」と映ることが多い。しかし近しい人間は「何か変」という感覚を持ちながら、うまく言語化できずにいる。",
+      blind_spots: [
+        "あなたが感じている違和感は「気のせい」ではなく、パターンの認識である",
+        "「謝罪＝反省」ではないことを、まだ信じたいと思っている部分がある",
+        "対象者の「良い面」に引きずられて、全体的なパターンを見落としやすい"
+      ],
+      problems: [
+        "あなたの弱さや秘密が、後で違う形で使われるリスクがある",
+        "関係が深まるほど、あなたは消耗し、対象者は何も失わない構造になっている",
+        "「なぜかこの人との関係から離れられない」という心理的な依存が生まれやすい"
+      ],
+      cause: "対象者は「人間関係をコスト・利益で計算する」思考パターンを持っている可能性が高い。あなたへの行動は意図的ではなく、「そのような思考の結果」として起きている。",
+      future_a: "このまま関係を続けると、あなたの消耗は蓄積され、ある時点で「使えない」と判断されたとき突然切られる可能性がある。",
+      future_b: "意識的に距離を保ちながら関係を観察すると、パターンが明確になる。適切な境界線が引けると、あなたの精神的安定が戻ってくる。",
+      lever: "「この人との関係で、自分は何を得ていて、何を失っているか」を一度紙に書き出す",
+      action_a: "今後の会話で、自分の個人的な情報（弱点・秘密・不安）を意識的に開示しない",
+      action_b: "この人物を知らない信頼できる人に、最近の出来事を客観的に話してみる",
+      first_action: "今日から、この人物とのやりとりを日付付きでメモに残し始める",
+      after_change: "記録をつけることでパターンが見えてくる。感情ではなく事実で関係を評価できるようになり、自分の判断への信頼が回復してくる。",
+      redefine: "あなたは騙されやすい人ではなく、誠実さで人と関わってきた人です。\n\nサイコパシー傾向のある人物との関係において、傷つくのはあなたが弱いからではありません。誠実に関わろうとするあなたの姿勢を、相手が利用していたからです。あなたの感じた違和感は正しかった。それを「気のせい」と処理してきたのは、関係を信じたかったからであって、あなたの欠点ではありません。\n\nこれからは、感情ではなくパターンで人を見る視点を一つ持つことで、あなたは傷つかずに人と深くつながれるようになります。あなたの誠実さは、同じように誠実な人との関係の中で、最大限に輝きます。"
+    },
+    female: {
+      type: "感情操作型",
+      oneLiner: "共感を武器にする人",
+      desc: "対象者の行動パターンは、感情操作・罪悪感の利用・依存形成において顕著な特徴を示しています。「理解してくれる存在」として機能しながら、関係のコントロールを維持している可能性があります。",
+      strengths: [
+        "相手が聞きたいことを正確に伝える共感演技の精度が高い",
+        "感情的な絆の形成が速く、短期間で深い信頼を作る能力がある",
+        "被害者ポジションの活用が巧みで、責任を外部に移す能力がある"
+      ],
+      behaviors: [
+        "「あなただけが私をわかってくれる」という言葉で特別感を作る",
+        "あなたの行動を「私が傷ついた」という形で責める",
+        "あなたが距離を置こうとすると、急に弱々しくなるか攻撃的になる",
+        "第三者（共通の知人・家族）をうまく巻き込み、孤立させようとする"
+      ],
+      others_view: "第三者から見ると「感情豊かで優しい人」に映ることが多い。あなたの違和感を第三者に伝えても「そんな人に見えない」と言われやすく、それがさらにあなたを混乱させる。",
+      blind_spots: [
+        "「私のために泣いてくれる人が、私を傷つけるはずがない」という思い込みがある",
+        "感情の激しさと誠実さは、別のものだということが認識しにくくなっている",
+        "「自分が悪いのかもしれない」という感覚が、正常な判断を曇らせている"
+      ],
+      problems: [
+        "あなたが精神的に消耗しているのに、対象者との関係をやめられない",
+        "「自分がもっとうまくやれば」という自責が積み重なっている",
+        "あなたの自己評価が、この関係を通じて少しずつ下がっている可能性がある"
+      ],
+      cause: "対象者は「感情的なつながり」をコントロールの手段として使っている可能性がある。意図的かどうかにかかわらず、その結果があなたへの影響として現れている。",
+      future_a: "このまま続くと、あなたの自己評価と判断力がさらに低下し、「この関係なしには生きられない」という状態に近づいていく可能性がある。",
+      future_b: "物理的・心理的な距離を少し置くだけで、「客観的に見えなかったもの」が見えてくる。自分の感覚への信頼が回復してくる。",
+      lever: "「この関係の中で、私は成長しているか、消耗しているか」を正直に評価する",
+      action_a: "今日から、この人に関する出来事を感情ではなく「事実」として日付付きで記録する",
+      action_b: "この人を知らない信頼できる人に、最近の状況を具体的に話してみる",
+      first_action: "今日、「この関係で私が失ったもの」を一つだけ正直に書き出す",
+      after_change: "記録と外部の視点が加わることで、「感情のフォグ（霧）」が晴れていく。自分の判断への信頼が少しずつ戻ってくる。",
+      redefine: "あなたは騙されやすい人ではなく、愛情深く人と関わってきた人です。\n\nその関係の中で傷ついているのは、あなたが弱いからではありません。相手が、あなたの愛情深さと誠実さを、関係のコントロールのために使ってきたからです。あなたが感じた「何かおかしい」という直感は、ずっと正しかった。\n\nこれからは、その誠実さを守りながら、同じように誠実な人との関係の中でこそ、あなたの力が本当に輝きます。あなたが消耗せずに、本物のつながりの中にいる未来は、すぐそこにあります。"
+    }
+  },
+  mid: {
+    male: {
+      type: "状況的リスク型",
+      oneLiner: "条件次第で豹変する可能性のある人",
+      desc: "通常は問題のない言動でも、特定の条件（ストレス・競争・権力）下で支配的・操作的な行動が現れる傾向があります。",
+      strengths: [
+        "安定した状況では誠実で頼れる部分がある",
+        "問題解決能力が高く、実務的な場面では信頼できる",
+        "対外的な印象管理が得意で、社会的評価は高い"
+      ],
+      behaviors: [
+        "競争的な場面や自分の立場が脅かされると、急に攻撃的になる",
+        "自分が優位なときと劣位なときで態度が大きく変わる",
+        "問題が起きたとき、最初の反応が「誰が悪いか」を探すことになる",
+        "謝罪や反省の言葉はあるが、行動の変化が伴わないことが多い"
+      ],
+      others_view: "「普段はいい人なのに」という評価が多い。ただし継続的に関わる人には「当たりが強いことがある」「気を遣う」という印象を持たれている。",
+      blind_spots: [
+        "対象者の「良い面」が目に入りやすく、問題のある行動を例外として処理しやすい",
+        "「あの状況だから仕方なかった」という文脈で許容してしまいやすい",
+        "行動のパターンではなく、個別のエピソードで評価してしまっている"
+      ],
+      problems: [
+        "不安定な状況が続くと、精神的な疲弊が蓄積する",
+        "「次はうまくいくかもしれない」という期待が、関係の継続を促しやすい",
+        "対象者に対して本音を言えなくなっている可能性がある"
+      ],
+      cause: "対象者はストレス下で自己制御が低下するパターンを持っている可能性がある。深刻なサイコパシーではなく、感情調節の課題である可能性もある。",
+      future_a: "状況が改善されないまま続くと、あなたのストレスは蓄積され、判断が鈍くなっていく。",
+      future_b: "距離感を意識しながら接することで、対象者のパターンが明確になり、あなたの判断が安定する。",
+      lever: "「行動のパターン」を記録し、個別のエピソードで評価するのをやめる",
+      action_a: "今後1ヶ月、対象者の問題のある言動を日付付きで記録する",
+      action_b: "「この人は変わってくれる」という期待を一度保留にして、現在の行動だけを評価してみる",
+      first_action: "今日、「この人との関係で困っていること」を箇条書きで3つ書き出す",
+      after_change: "パターンが見えてくると、感情に流されずに判断できるようになる。距離感の調整がしやすくなり、精神的な安定が増していく。",
+      redefine: "あなたは状況を見誤っているのではなく、まだ十分な情報が揃っていない段階にいるだけです。\n\n人を見極めるには、単発のエピソードではなく、複数の状況にわたるパターンが必要です。あなたが感じている違和感は重要なシグナルです。それを記録し、パターンとして観察することで、この関係をどう扱うかの判断がより明確になります。\n\nあなたの直感は正しい。あとは、それを裏付ける観察の時間が必要なだけです。"
+    },
+    female: {
+      type: "感情的コントロール傾向型",
+      oneLiner: "弱さを使って状況をコントロールする人",
+      desc: "感情的な訴えや被害者ポジションを使って、関係の主導権を握ろうとする傾向が見られます。意図的かどうかに関わらず、あなたへの影響が生じています。",
+      strengths: [
+        "感情表現が豊かで、短期間で人の心をつかむ力がある",
+        "問題が起きたときに感情で訴える力が強く、場の雰囲気を変えられる",
+        "共感してくれる人を引き寄せる磁力がある"
+      ],
+      behaviors: [
+        "自分の感情を使って相手に罪悪感を感じさせることがある",
+        "「あなたのせいで私が傷ついた」という語り口が繰り返される",
+        "あなたが距離を置こうとすると、急に弱々しくなるか態度が変わる",
+        "感情の起伏が激しく、状況によって「良い自分」と「別の自分」の差が大きい"
+      ],
+      others_view: "外から見ると「感情豊かで繊細な人」という印象が強い。あなたが感じている困難は、第三者には見えにくく、「そんなに悪い人には見えない」と言われやすい。",
+      blind_spots: [
+        "感情的な訴えに反応して、境界線を曖昧にしてしまっていることがある",
+        "「かわいそうだから」という理由で、本来断るべき状況を許容してしまっている",
+        "継続的なパターンより、その場の感情で関係を評価してしまっている"
+      ],
+      problems: [
+        "あなたが対象者の感情の「受け皿」になっている状態が続いている",
+        "断ると「傷つけた」という罪悪感が生まれ、境界線が引けなくなっている",
+        "あなた自身の感情とニーズが、この関係の中で後回しになっている"
+      ],
+      cause: "対象者は感情的な表現を、意図せずとも相手コントロールの手段として使っているパターンが見られる。",
+      future_a: "このまま続くと、あなたの感情的エネルギーが消耗し、他の関係にも影響が及ぶ。",
+      future_b: "「感情的な訴えに反応する前に一呼吸置く」という一点が変わると、関係のコントロールが変わる。",
+      lever: "「感情的な訴えにすぐ反応しない」という一点の実践",
+      action_a: "対象者から感情的な訴えが来たとき、その場で答えずに「少し時間をください」と伝える",
+      action_b: "「今、私はどう感じているか」を先に確認してから、相手の感情に反応する練習をする",
+      first_action: "今日、対象者から何か言われたとき、即座に反応せずに3秒だけ間を置いてみる",
+      after_change: "反応のスピードが変わると、関係のダイナミクスが変わる。あなたのペースで関係を扱えるようになっていく。",
+      redefine: "あなたは流されやすい人ではなく、他者の感情に真剣に向き合ってきた人です。\n\nその誠実さが、この関係の中では消耗として現れています。感情的な訴えに反応することと、境界線を引くことは、矛盾しません。あなたが少しだけ「自分のペースで反応する」ことを覚えるだけで、関係の質は大きく変わります。\n\nあなたの共感力は、大切な資質です。それを守りながら、健全な距離感を持てるようになるとき、あなたは消耗せずに、本当の意味で誰かの力になれます。"
+    }
+  },
+  low: {
+    male: {
+      type: "低リスク：傾向は薄い",
+      oneLiner: "今のところ、強いサイコパシー傾向は見られない",
+      desc: "今回の診断では、対象者のサイコパシー傾向は低い結果となりました。感じている違和感は、サイコパシーではなく別の要因から来ている可能性があります。",
+      strengths: [
+        "通常の対人関係において、誠実で信頼できる行動が見られる",
+        "感情表現や共感の反応が自然で、操作的な印象が薄い",
+        "長期的な関係において、一貫した行動が期待できる"
+      ],
+      behaviors: [
+        "約束や義務をある程度守る行動が見られる",
+        "他者の感情に対して、自然な反応を示している",
+        "問題が起きたとき、ある程度の責任を自分に帰属させられる",
+        "長期的な計画や関係に、継続して取り組める"
+      ],
+      others_view: "第三者から見ると「普通の人」という印象が多い。特別な危険信号は見えにくいが、あなたが感じた違和感には別の原因がある可能性がある。",
+      blind_spots: [
+        "スコアが低くても、特定のカテゴリに集中している場合は注意が必要",
+        "「サイコパシーではない」と「関係が健全である」は別の問題",
+        "あなたの違和感が何から来ているのかを、別の角度から探る価値がある"
+      ],
+      problems: [
+        "違和感の原因が特定されていないため、対処が難しい状態",
+        "価値観の不一致・コミュニケーションスタイルの差が摩擦を生んでいる可能性",
+        "関係上の問題が別の原因（愛着スタイル・ストレスなど）から来ている可能性"
+      ],
+      cause: "サイコパシーとは別の対人関係上の課題が存在する可能性が高い。関係性の問題を別の枠組みで探ることが有益かもしれない。",
+      future_a: "違和感の原因が不明なまま続くと、関係のストレスは解消されにくい。",
+      future_b: "違和感の原因を具体的に特定できると、対処の方向性が見えてくる。",
+      lever: "「何が違和感の源か」を具体的に言語化すること",
+      action_a: "違和感を感じた具体的な場面を3つ書き出し、共通点を探してみる",
+      action_b: "信頼できる第三者に、状況を具体的に話してみる",
+      first_action: "今日、「この人との関係で、具体的に何が困っているか」を一つ言葉にする",
+      after_change: "原因が言語化されると、対処の方向性が明確になる。関係の改善か距離の調整かを、より明確に判断できるようになる。",
+      redefine: "あなたは見当違いなことを心配していたのではなく、大切な関係をちゃんと考えていたのです。\n\n診断のスコアが低かったことは、あなたの違和感が無効だということではありません。人との関係における感覚は、数値化できないものも多くあります。サイコパシーではなかったとしても、あなたが感じた「何かが違う」という直感は大切にしてください。\n\nその違和感の原因を一つひとつ言葉にしていくことで、関係をより良くする方法か、適切な距離感を見つける方法かが、見えてきます。あなたが健全な関係の中にいる未来のために、その直感を大切に持ち続けてください。"
+    },
+    female: {
+      type: "低リスク：傾向は薄い",
+      oneLiner: "今のところ、強いサイコパシー傾向は見られない",
+      desc: "今回の診断では、対象者のサイコパシー傾向は低い結果となりました。感じている違和感は、価値観の不一致やコミュニケーションスタイルの差から来ている可能性があります。",
+      strengths: [
+        "通常の対人関係において、感情表現が自然で操作的な印象が薄い",
+        "共感的な反応が見られ、他者への配慮がある",
+        "長期的な関係において、ある程度の一貫性がある"
+      ],
+      behaviors: [
+        "感情表現が豊かで、喜びや悲しみを自然に表している",
+        "他者への共感的な反応が見られる",
+        "約束や関係に対して、継続的な関心を持っている",
+        "問題が起きたとき、感情的ではあるが誠実に向き合おうとしている"
+      ],
+      others_view: "第三者から見ると「普通の人」「感情豊かな人」という印象が多い。あなたの感じた違和感は、別の関係上の課題から来ている可能性がある。",
+      blind_spots: [
+        "「サイコパシーではない」ことと「関係が問題ない」ことは別",
+        "あなたの違和感の原因を、別の角度から探る価値がある",
+        "特定のカテゴリのスコアが高い場合は、引き続き観察が必要"
+      ],
+      problems: [
+        "違和感の原因が特定されていないため、対処の方向性が見えにくい",
+        "別の対人関係の課題（愛着スタイル・コミュニケーションの差）が存在する可能性",
+        "あなた自身が感じている不安や混乱の原因の特定が必要"
+      ],
+      cause: "サイコパシーとは別の対人関係上の課題が存在する可能性が高い。",
+      future_a: "原因が不明なまま続くと、違和感は解消されにくく、関係への不信感が蓄積しやすい。",
+      future_b: "違和感の原因が言語化できると、建設的な話し合いか、適切な距離感の調整が可能になる。",
+      lever: "違和感の具体的な内容を言語化すること",
+      action_a: "違和感を感じた場面を3つ書き出し、何が共通しているか探してみる",
+      action_b: "信頼できる人に、具体的な状況を話してみる",
+      first_action: "今日、「この人との関係で、何が一番気になっているか」を一文で書いてみる",
+      after_change: "言語化が進むと、「何に対処すればいいか」が見えてくる。関係の改善方向か、距離の調整方向かを、冷静に判断しやすくなる。",
+      redefine: "あなたは見当違いなことを心配していたのではなく、大切な関係を真剣に考えていた人です。\n\n診断結果にかかわらず、あなたが感じた直感は大切にしてください。スコアが低くても、「何かが気になる」という感覚は、関係の中の重要な情報です。サイコパシーではなかったとしても、あなたが健全な関係の中にいることを望むその気持ちは、とても自然で正直なものです。\n\n違和感を言葉にしながら、あなたにとって心地よい関係とはどういうものかを探していくことで、その未来は少しずつ近づいてきます。"
+    }
+  }
+};
+// 15項目構造で結果をレンダリング
+function renderResult15(data, pct, typeColor, typeGrad) {
+  const sections = [
+    {
+      id: 1,
+      title: "この診断でわかること",
+      content: `<div class="section-text">この診断は、あなたが回答した${data.type.includes('低リスク') ? '28' : '30'}問の行動・感情パターンから、サイコパシー傾向の強さと内訳を可視化します。結果は臨床診断ではなく、自己理解と対人関係の改善のための指標です。スコアは傾向の強さを示しており、「高い＝悪い人」ではなく、「どのような思考・行動パターンを持っているか」を理解するためのものです。</div>`
+    },
+    {
+      id: 2,
+      title: "あなたのタイプ",
+      content: `<div style="margin-bottom:1rem"><span style="font-family:'Noto Serif JP',serif;font-size:1.3rem;color:${typeColor};font-weight:600">あなたは「${data.type}」です</span></div>
+<div style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">${data.oneLiner}</div>
+<div class="section-text">${data.desc}</div>`
+    },
+    {
+      id: 3,
+      title: "機能的な強み",
+      content: `<ul class="result-list">${data.strengths.map(s=>`<li class="result-list-item result-list-positive">${s}</li>`).join('')}</ul>`
+    },
+    {
+      id: 4,
+      title: "行動ベースの特徴",
+      content: `<ul class="result-list">${data.behaviors.map(b=>`<li class="result-list-item">${b}</li>`).join('')}</ul>`
+    },
+    {
+      id: 5,
+      title: "他者から見た印象",
+      content: `<div class="section-text">${data.others_view}</div>`
+    },
+    {
+      id: 6,
+      title: "一言で言うなら",
+      content: `<div style="font-family:'Noto Serif JP',serif;font-size:1.1rem;color:${typeColor};line-height:1.8;padding:.8rem 1rem;background:rgba(255,255,255,.03);border-radius:8px;border-left:2px solid ${typeColor}">${data.oneLiner}</div>`
+    },
+    {
+      id: 7,
+      title: "無自覚ポイント",
+      content: `<ul class="result-list">${data.blind_spots.map(b=>`<li class="result-list-item result-list-warning">${b}</li>`).join('')}</ul>`
+    },
+    {
+      id: 8,
+      title: "起きていること・起こりうること",
+      content: `<ul class="result-list">${data.problems.map(p=>`<li class="result-list-item result-list-danger">${p}</li>`).join('')}</ul>`
+    },
+    {
+      id: 9,
+      title: "その原因",
+      content: `<div class="section-text">${data.cause}</div>`
+    },
+    {
+      id: 10,
+      title: "未来の分岐",
+      content: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+<div style="background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);border-radius:8px;padding:.9rem">
+<div style="font-size:.68rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.6rem">A：現状継続の場合</div>
+<div style="font-size:.83rem;line-height:1.8;color:#b0b8c8">${data.future_a}</div>
+</div>
+<div style="background:rgba(255,255,255,.03);border:.5px solid ${typeColor}55;border-radius:8px;padding:.9rem">
+<div style="font-size:.68rem;color:${typeColor};letter-spacing:.08em;margin-bottom:.6rem">B：1点変えた場合</div>
+<div style="font-size:.83rem;line-height:1.8;color:#c0c8d0">${data.future_b}</div>
+</div>
+</div>`
+    },
+    {
+      id: 11,
+      title: "変えるべき一点",
+      content: `<div style="font-size:.9rem;line-height:1.9;color:var(--text);padding:.8rem 1rem;background:rgba(255,255,255,.03);border-radius:8px;border-left:2px solid ${typeColor}">${data.lever}</div>`
+    },
+    {
+      id: 12,
+      title: "行動の選択肢",
+      content: `<div style="display:flex;flex-direction:column;gap:.6rem">
+<div style="background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);border-radius:8px;padding:.8rem 1rem">
+<div style="font-size:.68rem;color:var(--muted);margin-bottom:.4rem;letter-spacing:.08em">行動A</div>
+<div style="font-size:.85rem;line-height:1.8;color:#c0c8d0">${data.action_a}</div>
+</div>
+<div style="background:rgba(255,255,255,.03);border:.5px solid ${typeColor}55;border-radius:8px;padding:.8rem 1rem">
+<div style="font-size:.68rem;color:${typeColor};margin-bottom:.4rem;letter-spacing:.08em">行動B</div>
+<div style="font-size:.85rem;line-height:1.8;color:#c0c8d0">${data.action_b}</div>
+</div>
+</div>`
+    },
+    {
+      id: 13,
+      title: "最初の1アクション",
+      content: `<div style="padding:1rem;background:rgba(255,255,255,.04);border:.5px solid ${typeColor};border-radius:10px">
+<div style="font-size:.72rem;color:${typeColor};letter-spacing:.1em;margin-bottom:.6rem">今すぐできること</div>
+<div style="font-size:.92rem;line-height:1.8;color:var(--text)">${data.first_action}</div>
+</div>`
+    },
+    {
+      id: 14,
+      title: "行動後の変化",
+      content: `<div class="section-text">${data.after_change}</div>`
+    },
+    {
+      id: 15,
+      title: "再定義",
+      content: `<div style="font-size:.88rem;line-height:2.1;color:#c8d0d8;white-space:pre-line">${data.redefine}</div>`
+    }
+  ];
+
+  return sections.map(s => `
+<div class="result-section">
+  <div class="section-label"><span style="color:var(--muted);font-size:.65rem;margin-right:.5rem">${String(s.id).padStart(2,'0')}</span>${s.title}</div>
+  ${s.content}
+</div>`).join('');
+}
+</script>
+</body>
+</html>
