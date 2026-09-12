@@ -274,8 +274,9 @@ function showResult(){
   QS[gender].forEach((qi,i)=>{if(!catS[qi.cat]){catS[qi.cat]=0;catC[qi.cat]=0;}catS[qi.cat]+=(ans[i]||3);catC[qi.cat]++;});
   const catP={};Object.keys(catS).forEach(c=>{catP[c]=Math.round((catS[c]/(catC[c]*5))*100);});
   const total=ans.reduce((s,v)=>s+(v||3),0);
-  const pct=Math.round((total/150)*100);
-  const tier=pct>=65?'high':pct>=40?'mid':'low';
+  // 30問×1〜5点＝30〜150点を0〜100に換算（全問「全くそう思わない」=0、全問「どちらとも言えない」=50）
+  const pct=Math.round(((total-30)/120)*100);
+  const tier=pct>=65?'high':pct>=38?'mid':'low';
   const d=SELF_RESULTS[tier][gender];
   const typeColor=tier==='high'?'#c44569':tier==='mid'?'#f59e0b':'#06b6d4';
   const typeGrad=tier==='high'?'linear-gradient(90deg,#c44569,#8b1a34)':tier==='mid'?'linear-gradient(90deg,#f59e0b,#b45309)':'linear-gradient(90deg,#06b6d4,#0e7490)';
